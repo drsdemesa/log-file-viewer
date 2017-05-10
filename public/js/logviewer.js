@@ -1,6 +1,3 @@
-console.log("js");
-console.log( "asd" + $('#logFilePath').val() );
-
 $( document ).ready(function() {
 	var fileContents = "";
 	var lastPrintedRow = 0;
@@ -17,7 +14,6 @@ $( document ).ready(function() {
     	var contentsCount = Object.keys(fileContents.data).length;
     	var doPrint = true;
 
-    		console.log(id + lastPrintedRow);
     	switch(id){
     		case "go-to-end":
     			if(lastPrintedRow == contentsCount){
@@ -31,7 +27,6 @@ $( document ).ready(function() {
     			if(lastPrintedRow <= 10){
     				doPrint = false;
     			} else{
-    				console.log("prev10s");
     				var roundedLastPrintedRow = Math.ceil(lastPrintedRow / 10) * 10;
 	    			var start = roundedLastPrintedRow - increments*2;
 	    			var displayCount = (contentsCount < roundedLastPrintedRow - increments + 1) ? contentsCount : roundedLastPrintedRow - increments;
@@ -58,13 +53,13 @@ $( document ).ready(function() {
 	function printLogContents(startIndex, endIndex){
 		$("#logs").empty();
 		
-		$('<table class="table table-bordered" id="logTable"></table>').appendTo( '#logs' );
+		$('<table class="table table-bordered" id="logTable" border="1"></table>').appendTo( '#logs' );
 		for(var i = startIndex; i < endIndex; i++){
 			var value = fileContents.data[i];
 			key = i;
 			if( (key < endIndex) && (key >= startIndex)) {
 		  		var rowNum = key + 1;
-		  		$("<tr><th>"+rowNum+"</th><td>"+value+"</td></tr>").appendTo( '#logTable' );
+		  		$("<tr><th class='active'>"+rowNum+"</th><td>"+value+"</td></tr>").appendTo( '#logTable' );
 			} else{
 				//do nothing
 			}

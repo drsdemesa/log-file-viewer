@@ -15,18 +15,28 @@ class LogController extends Controller
     	$input = Input::only('logFilePath');  
 
     	$filePath = $input['logFilePath'];
-    	// Storage::copy($input['logFilePath'], 'templog.log');   
+    	// Storage::copy($filePath, 'templog.log'); 
     	if(file_exists($filePath)) {
-    		foreach($logContents = file($filePath) as $line) {
-		    // loop with $line for each line of yourfile.txt
-    			// echo $line . "<br/>";
-			}       
-		}       
+    		$newFileDirectory = $_SERVER['DOCUMENT_ROOT'] . '/logs/';
+    		// echo $newFileDirectory;
+    		if (!file_exists($newFileDirectory)) {
+		        mkdir($newFileDirectory, 0777, true);
+		    } 
+		    $newFilePath = $newFileDirectory."templog.log";
+			if ( copy($filePath, $newFilePath) ) {
+				$logContents = file($filePath);
+				// echo "copied";	
+			}
+			     
+		}  else {
+			return $this->respond([
+					'data' => "",
+					'error' => 'Invalid file path.'
+				]);
+		}     
 
-		// $sliced = $this->sliceArray($logContents);
 		$sliced = $logContents;
 
-		// var_dump($sliced);
     	return $this->respond([
     		'data' => $sliced
     	]);

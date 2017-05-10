@@ -31,45 +31,6 @@
             .full-height {
                 height: 100vh;
             }
-/*
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }*/
-
         </style>
     </head>
     <body>
@@ -85,33 +46,32 @@
                 </div>
             @endif
 
-            <div id="main-container" class="col-md-9 row">
-                <form action="viewfile" id="log-form" method="GET" class="form-inline">
-                        <div class="form-group">
-                            <div class="col-sm-10">
-                                 <input type="text" class="form-control" name="logFilePath" id="logFilePath" placeholder="path/to/file">
-                            </div>
-                            <div class="col-sm-2">
-                                <button type="submit" id="viewLog" name="viewLog" class="btn btn-default">View</button>
-                            </div>
+            <div class="row" >
+                <form action="viewfile" id="log-form" method="GET">
+                    <div class="form-group">
+                        <div class="col-xs-8 col-md-10">
+                             <input type="text" class="form-control" name="logFilePath" id="logFilePath" placeholder="path/to/file">
                         </div>
-                        {{ csrf_field() }}
-                </form>  
-
-                <div class="row" id="logs">
-                    
-                </div>
-
-                <div class="row">
-                    <ul class="pagination">
-                      <li><a href="#" id="go-to-beginning">|&#60;</a></li>
-                      <li><a href="#" id="prev-ten">&#60;</a></li>
-                      <li><a href="#" id="next-ten">&#62;</a></li>
-                      <li><a href="#" id="go-to-end">&#62;|</a></li>
-                    </ul>
-                </div> 
-
+                        <div class="col-xs-4 col-md-2">
+                            <button type="submit" id="viewLog" name="viewLog" class="btn btn-default active">View</button>
+                        </div>
+                    </div>
+                    {{ csrf_field() }}
+                 </form>  
             </div>
+
+            <div class="row" id="logs" >
+            </div>
+
+            <div class="row col-md-12 text-center">
+                <ul class="pagination">
+                  <li><a href="#" id="go-to-beginning">|&#60;</a></li>
+                  <li><a href="#" id="prev-ten">&#60;</a></li>
+                  <li><a href="#" id="next-ten">&#62;</a></li>
+                  <li><a href="#" id="go-to-end">&#62;|</a></li>
+                </ul>
+            </div> 
+
             
         </div>
     </body>
