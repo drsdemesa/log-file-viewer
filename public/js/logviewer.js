@@ -6,22 +6,44 @@ $( document ).ready(function() {
 	var lastPrintedRow = 0;
 	var increments = 10;
 
-	function printBeginning(id){
+	function toggleButton(){
+		if(lastPrintedRow < increments) {
+			$("go-to-beginning").attr("disabled") = disabled;
+			$("previous-ten").attr("disabled") = disabled;
+		}
+	}
+
+	function printLogs(id){
     	var contentsCount = Object.keys(fileContents.data).length;
-    	console.log(id);
+    	var doPrint = true;
+
+    		console.log(id + lastPrintedRow);
     	switch(id){
     		case "go-to-end":
-    			var start = Math.floor(contentsCount/10) * 10;
-    			var displayCount = (contentsCount < (start+increments+1))? contentsCount : start + increments;
+    			if(lastPrintedRow == contentsCount){
+    				doPrint = false;
+    			} else{
+    				var start = Math.floor(contentsCount/10) * 10;
+    				var displayCount = (contentsCount < (start+increments+1))? contentsCount : start + increments;
+    			}
     			break;
-    		case "previous-ten" :
-    			var start = lastPrintedRow - increments*2;
-    			var displayCount = lastPrintedRow - increments;
+    		case "prev-ten" :
+    			if(lastPrintedRow <= 10){
+    				doPrint = false;
+    			} else{
+    				console.log("prev10s");
+    				var roundedLastPrintedRow = Math.ceil(lastPrintedRow / 10) * 10;
+	    			var start = roundedLastPrintedRow - increments*2;
+	    			var displayCount = (contentsCount < roundedLastPrintedRow - increments + 1) ? contentsCount : roundedLastPrintedRow - increments;
+	    		}
     			break;
     		case "next-ten":
-    			var start = lastPrintedRow;
-    			console.log("lastPrintedRow = " + lastPrintedRow);
-				var displayCount = (contentsCount < (lastPrintedRow+increments+1))? contentsCount : lastPrintedRow + increments;
+    			if(lastPrintedRow == contentsCount){
+    				doPrint = false;
+    			} else{
+    				var start = lastPrintedRow;
+					var displayCount = (contentsCount < (lastPrintedRow+increments+1))? contentsCount : lastPrintedRow + increments;
+				}
 				break;
     		case "go-to-beginning":
     		default:
@@ -29,9 +51,8 @@ $( document ).ready(function() {
     			var displayCount = (contentsCount < (increments+1))? contentsCount : start + increments;
     			break;
     	}
-    	console.log("contentsCount = " + contentsCount + ", start = " + start + ", displayCount = "+ displayCount);
-    	
-    	printLogContents(start, displayCount);
+
+    	if(doPrint) printLogContents(start, displayCount);
 	}
 
 	function printLogContents(startIndex, endIndex){
@@ -42,27 +63,25 @@ $( document ).ready(function() {
 			var value = fileContents.data[i];
 			key = i;
 			if( (key < endIndex) && (key >= startIndex)) {
-		  		// alert( key + ": " + value );
 		  		var rowNum = key + 1;
 		  		$("<tr><th>"+rowNum+"</th><td>"+value+"</td></tr>").appendTo( '#logTable' );
 			} else{
 				//do nothing
 			}
-		};
+		}
 		lastPrintedRow = endIndex;
 	}
 
     $('#viewLog').on('click', function(e) {
-        // alert( "Handler for .on() called." );
         e.preventDefault();
         $.get("/viewfile", {logFilePath : $('#logFilePath').val()}, function(dataReceived){
         	fileContents = dataReceived;
-        	printBeginning();
+        	printLogs();
         });
         return false;//Returning false prevents the event from continuing up the chain
     });
 
     $('a').on('click', function(e) {
-    	printBeginning($(this).attr('id'));
+    	printLogs($(this).attr('id'));
     });
 });
