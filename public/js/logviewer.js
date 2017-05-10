@@ -14,6 +14,15 @@ $( document ).ready(function() {
     			var start = Math.floor(contentsCount/10) * 10;
     			var displayCount = (contentsCount < (start+increments+1))? contentsCount : start + increments;
     			break;
+    		case "previous-ten" :
+    			var start = lastPrintedRow - increments*2;
+    			var displayCount = lastPrintedRow - increments;
+    			break;
+    		case "next-ten":
+    			var start = lastPrintedRow;
+    			console.log("lastPrintedRow = " + lastPrintedRow);
+				var displayCount = (contentsCount < (lastPrintedRow+increments+1))? contentsCount : lastPrintedRow + increments;
+				break;
     		case "go-to-beginning":
     		default:
     			var start = 0;
@@ -26,11 +35,12 @@ $( document ).ready(function() {
 	}
 
 	function printLogContents(startIndex, endIndex){
-		console.log("printing");
 		$("#logs").empty();
 		
 		$('<table class="table table-bordered" id="logTable"></table>').appendTo( '#logs' );
-		$.each( fileContents.data, function( key, value ) {
+		for(var i = startIndex; i < endIndex; i++){
+			var value = fileContents.data[i];
+			key = i;
 			if( (key < endIndex) && (key >= startIndex)) {
 		  		// alert( key + ": " + value );
 		  		var rowNum = key + 1;
@@ -38,7 +48,7 @@ $( document ).ready(function() {
 			} else{
 				//do nothing
 			}
-		});
+		};
 		lastPrintedRow = endIndex;
 	}
 
@@ -53,18 +63,6 @@ $( document ).ready(function() {
     });
 
     $('a').on('click', function(e) {
-
     	printBeginning($(this).attr('id'));
-    });
-
-    $('#previous-ten').on('click', function(e) {
-    });
-    $('#next-ten').on('click', function(e) {
-    	var contentsCount = Object.keys(fileContents.data).length;
-    	var displayCount = (contentsCount < increments+1)? contentsCount : contentsCount + increments;
-    	var start = lastPrintedRow;
-    	printLogContents(start, displayCount);
-    });
-    $('#go-to-end').on('click', function(e) {
     });
 });
