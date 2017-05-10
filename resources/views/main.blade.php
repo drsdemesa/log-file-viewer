@@ -12,12 +12,14 @@
 
         <!-- JS -->
         <!-- <script type="text/javascript" src="{{ URL::asset('js/app.js') }}"></script> -->
+        <script type="text/javascript" src="{{ URL::asset('js/jquery-3.2.1.min.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('js/logviewer.js') }}"></script>
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}" />
         <style>
             html, body {
+                padding-top: 2em;
                 background-color: #fff;
                 color: #636b6f;
                 font-family: 'Raleway', sans-serif;
@@ -67,10 +69,11 @@
             .m-b-md {
                 margin-bottom: 30px;
             }*/
+
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="full-height container">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @if (Auth::check())
@@ -82,23 +85,32 @@
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Log File Viewer
-                </div>
-            </div>
-
             <div id="main-container" class="col-md-9 row">
-                    <form action="viewfile" id="log-form" method="GET" enctype="multipart/form-data">
-                        <div class="form-group"> 
-                            <label for="logFile">File input</label> 
-                            <input type="file" id="logFile" name="logFile"> 
-                        </div>
+                <form action="viewfile" id="log-form" method="GET" class="form-inline">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="logFilePath" id="logFilePath" placeholder="path/to/file">
-                            <button type="submit" class="btn btn-default">View</button>
+                            <div class="col-sm-10">
+                                 <input type="text" class="form-control" name="logFilePath" id="logFilePath" placeholder="path/to/file">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" id="viewLog" name="viewLog" class="btn btn-default">View</button>
+                            </div>
                         </div>
-                    </form>   
+                        {{ csrf_field() }}
+                </form>  
+
+                <div class="row" id="logs">
+                    
+                </div>
+
+                <div class="row">
+                    <ul class="pagination">
+                      <li><a href="#" id="go-to-beginning">|&#60;</a></li>
+                      <li><a href="#" id="prev-ten">&#60;</a></li>
+                      <li><a href="#" id="next-ten">&#62;</a></li>
+                      <li><a href="#" id="go-to-end">&#62;|</a></li>
+                    </ul>
+                </div> 
+
             </div>
             
         </div>
